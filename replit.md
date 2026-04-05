@@ -20,6 +20,13 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Affiliate products**: Amazon tag `bfwhisperer08-20` on all product links
 - **Phone**: (407) 868-1569 → `tel:+14078681569` (clickable everywhere)
 
+## GitHub Repository
+
+- **Remote**: https://github.com/TBajwa/lactation-consultant
+- **Branch**: `main`
+- **Git remote name**: `origin`
+- All project code is pushed to this repository.
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces

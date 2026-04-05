@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "CHvveFBzs-5qPg43ohnOg"
+uri = "file://artifacts/breastfeeding-whisperer/src/assets/hero-nursing.png"
+type = "image"
+title = "mother nursing newborn baby"
+
+[[generated]]
+id = "H2QAiBE-eklIexzuEt_Gd"
+uri = "file://artifacts/breastfeeding-whisperer/src/assets/consultant-visit.png"
+type = "image"
+title = "lactation consultant visiting home"
+
+[[generated]]
+id = "DZsAI465q06hEl1hpIkQw"
+uri = "file://attached_assets/hero-nursing.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ZR3z4GOkDVuwaiJFC1IDb"
+uri = "file://attached_assets/about-tara.png"
+type = "image"
+title = "generated_image"

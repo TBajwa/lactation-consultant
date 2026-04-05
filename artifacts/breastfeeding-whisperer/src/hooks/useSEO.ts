@@ -7,39 +7,47 @@ interface SEOProps {
   image?: string;
 }
 
-export function useSEO({ title, description, url = "https://www.thebreastfeedingwhisperer.com", image }: SEOProps) {
+const BASE_URL = "https://www.thebreastfeedingwhisperer.com";
+const DEFAULT_IMAGE = `${BASE_URL}/opengraph.jpg`;
+
+function setMeta(selector: string, attr: string, content: string) {
+  let el = document.querySelector(selector) as HTMLMetaElement | null;
+  if (!el) {
+    el = document.createElement("meta");
+    const [attrName, attrValue] = attr.split("=");
+    el.setAttribute(attrName, attrValue);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+export function useSEO({
+  title,
+  description,
+  url,
+  image,
+}: SEOProps) {
   useEffect(() => {
-    // Title
-    document.title = `${title} | The Breastfeeding Whisperer`;
+    const fullTitle = `${title} | The Breastfeeding Whisperer`;
+    const canonicalUrl = url ? `${BASE_URL}${url}` : BASE_URL;
+    const ogImage = image || DEFAULT_IMAGE;
 
-    // Meta Description
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement("meta");
-      metaDescription.setAttribute("name", "description");
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.setAttribute("content", description);
+    document.title = fullTitle;
 
-    // OG Title
-    let ogTitle = document.querySelector('meta[property="og:title"]');
-    if (!ogTitle) {
-      ogTitle = document.createElement("meta");
-      ogTitle.setAttribute("property", "og:title");
-      document.head.appendChild(ogTitle);
-    }
-    ogTitle.setAttribute("content", `${title} | The Breastfeeding Whisperer`);
+    setMeta('meta[name="description"]', 'name=description', description);
 
-    // OG Description
-    let ogDescription = document.querySelector('meta[property="og:description"]');
-    if (!ogDescription) {
-      ogDescription = document.createElement("meta");
-      ogDescription.setAttribute("property", "og:description");
-      document.head.appendChild(ogDescription);
-    }
-    ogDescription.setAttribute("content", description);
+    setMeta('meta[property="og:title"]', 'property=og:title', fullTitle);
+    setMeta('meta[property="og:description"]', 'property=og:description', description);
+    setMeta('meta[property="og:url"]', 'property=og:url', canonicalUrl);
+    setMeta('meta[property="og:image"]', 'property=og:image', ogImage);
+    setMeta('meta[property="og:type"]', 'property=og:type', "website");
+    setMeta('meta[property="og:site_name"]', 'property=og:site_name', "The Breastfeeding Whisperer");
 
-    // JSON-LD
+    setMeta('meta[name="twitter:card"]', 'name=twitter:card', "summary_large_image");
+    setMeta('meta[name="twitter:title"]', 'name=twitter:title', fullTitle);
+    setMeta('meta[name="twitter:description"]', 'name=twitter:description', description);
+    setMeta('meta[name="twitter:image"]', 'name=twitter:image', ogImage);
+
     let jsonLdScript = document.querySelector('script[type="application/ld+json"]');
     if (!jsonLdScript) {
       jsonLdScript = document.createElement("script");
@@ -53,14 +61,13 @@ export function useSEO({ title, description, url = "https://www.thebreastfeeding
       "description": "IBCLC lactation consultant offering in-home and virtual breastfeeding support in Central Florida.",
       "telephone": "+14078681569",
       "areaServed": "Central Florida",
-      "url": "https://www.thebreastfeedingwhisperer.com",
+      "url": BASE_URL,
       "sameAs": [
         "https://www.facebook.com/thebreastfeedingwhisperer",
-        "https://www.instagram.com/thebreastfeedingwhisperer/"
+        "https://www.instagram.com/thebreastfeedingwhisperer/",
       ],
       "priceRange": "$$",
-      "serviceType": "Lactation Consultation"
+      "serviceType": "Lactation Consultation",
     });
-
   }, [title, description, url, image]);
 }

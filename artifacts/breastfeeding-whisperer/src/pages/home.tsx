@@ -2,7 +2,7 @@ import { useSEO } from "@/hooks/useSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Phone, Heart, Clock, Award, ShieldCheck, ArrowRight } from "lucide-react";
+import { Phone, Heart, Award, ShieldCheck, ArrowRight, Star } from "lucide-react";
 import heroImg from "@assets/hero-nursing.png";
 
 export default function Home() {
@@ -149,6 +149,49 @@ export default function Home() {
                 </Link>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Guarantee Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-[#FDF8F5] rounded-3xl p-10 md:p-14 border border-[#C41E8E]/15 text-center relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#C41E8E] via-[#6B0032] to-[#C41E8E]" />
+              <div className="flex justify-center gap-1 mb-6">
+                {Array(5).fill(0).map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-[#C41E8E] text-[#C41E8E]" />
+                ))}
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#1C1412] mb-5 leading-tight">
+                Tara guarantees your breastfeeding success.
+              </h2>
+              <p className="text-lg text-[#6B5B57] leading-relaxed mb-8 max-w-2xl mx-auto">
+                Every consultation comes with Tara's complete commitment to your breastfeeding journey. She will work with you until you have a plan that works — with the knowledge, confidence, and hands-on guidance to carry it forward. No rushing. No guessing. Just results.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-left">
+                {[
+                  { title: "IBCLC Certified", desc: "The gold standard in lactation expertise — not a nurse or doula, but a board-certified specialist." },
+                  { title: "Personalized Plan", desc: "Every mother and baby are different. Your consultation is 100% tailored to your specific situation." },
+                  { title: "Ongoing Support", desc: "The conversation doesn't end when Tara walks out the door. Bundle clients get unlimited text support." },
+                ].map((item) => (
+                  <div key={item.title} className="bg-white rounded-2xl p-5 border border-[#1C1412]/5">
+                    <h3 className="font-serif font-bold text-[#1C1412] mb-2">{item.title}</h3>
+                    <p className="text-[#6B5B57] text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+              <Button asChild size="lg" className="rounded-full bg-[#C41E8E] hover:bg-[#6B0032] text-white h-14 px-10 text-base font-semibold transition-all hover:scale-105 shadow-lg shadow-[#C41E8E]/25">
+                <Link href="/book">Book Your Consultation</Link>
+              </Button>
+            </motion.div>
           </div>
         </div>
       </section>

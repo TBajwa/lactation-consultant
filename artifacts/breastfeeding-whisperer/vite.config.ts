@@ -53,6 +53,15 @@ export default defineConfig({
     },
     dedupe: ["react", "react-dom"],
   },
+  optimizeDeps: {
+    include: [
+      "react",
+      "react-dom",
+      "react-hook-form",
+      "@hookform/resolvers/zod",
+      "zod",
+    ],
+  },
   root: path.resolve(import.meta.dirname),
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),

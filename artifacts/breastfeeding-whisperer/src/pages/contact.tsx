@@ -1,9 +1,21 @@
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import { useSEO } from "@/hooks/useSEO";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Phone, MessageSquare, MapPin, Clock, CheckCircle } from "lucide-react";
 import { SiFacebook, SiInstagram, SiYoutube } from "react-icons/si";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().min(2, "Please enter your name"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().optional(),
+  message: z.string().min(10, "Please enter a message (at least 10 characters)"),
+});
+
+type ContactFormValues = z.infer<typeof contactSchema>;
 
 const fadeInUp = {
   initial: { opacity: 0, y: 24 },
@@ -12,55 +24,112 @@ const fadeInUp = {
   transition: { duration: 0.55 },
 };
 
-interface FormErrors {
-  name?: string;
-  email?: string;
-  message?: string;
-}
+const inputClass =
+  "w-full h-12 px-4 rounded-xl border border-[#1C1412]/15 bg-white text-[#1C1412] placeholder:text-[#6B5B57]/50 focus:outline-none focus:ring-2 focus:ring-[#C41E8E]/30 focus:border-[#C41E8E] transition-all text-sm";
 
-function validateEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function ContactForm({ onSuccess }: { onSuccess: () => void }) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+  });
+
+  const onSubmit = async (_data: ContactFormValues) => {
+    await new Promise<void>((resolve) => setTimeout(resolve, 900));
+    reset();
+    onSuccess();
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+      <div>
+        <h2 className="text-2xl font-serif font-bold text-[#1C1412] mb-2">Send a Message</h2>
+        <p className="text-[#6B5B57] text-sm">Questions, concerns, or just want to say hello — Tara reads every message.</p>
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
+            Full Name <span className="text-[#C41E8E]">*</span>
+          </label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Your name"
+            {...register("name")}
+            className={inputClass}
+          />
+          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
+            Email Address <span className="text-[#C41E8E]">*</span>
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            {...register("email")}
+            className={inputClass}
+          />
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="phone" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
+            Phone Number <span className="text-[#6B5B57] font-normal">(optional)</span>
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            placeholder="(000) 000-0000"
+            {...register("phone")}
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
+            Message <span className="text-[#C41E8E]">*</span>
+          </label>
+          <textarea
+            id="message"
+            rows={5}
+            placeholder="Tell Tara what's going on — she's listening..."
+            {...register("message")}
+            className="w-full px-4 py-3 rounded-xl border border-[#1C1412]/15 bg-white text-[#1C1412] placeholder:text-[#6B5B57]/50 focus:outline-none focus:ring-2 focus:ring-[#C41E8E]/30 focus:border-[#C41E8E] transition-all text-sm resize-none"
+          />
+          {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
+        </div>
+      </div>
+
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full rounded-full bg-[#C41E8E] hover:bg-[#6B0032] text-white py-3.5 text-base font-semibold transition-all hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
+      >
+        {isSubmitting ? "Sending..." : "Send Message"}
+      </Button>
+
+      <p className="text-xs text-center text-[#6B5B57]">
+        Your information is private and will never be shared.
+      </p>
+    </form>
+  );
 }
 
 export default function Contact() {
   useSEO({
     title: "Contact The Breastfeeding Whisperer",
     description: "Get in touch with Tara, IBCLC. Call (407) 868-1569 or send a message. Serving Central Florida and available virtually worldwide.",
+    url: "/contact",
   });
 
   const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState<FormErrors>({});
-
-  function validate(): FormErrors {
-    const errs: FormErrors = {};
-    if (!name.trim() || name.trim().length < 2) errs.name = "Please enter your name";
-    if (!email.trim() || !validateEmail(email)) errs.email = "Please enter a valid email address";
-    if (!message.trim() || message.trim().length < 10) errs.message = "Please enter a message (at least 10 characters)";
-    return errs;
-  }
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length > 0) {
-      setErrors(errs);
-      return;
-    }
-    setErrors({});
-    setSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 900));
-    setSubmitting(false);
-    setSubmitted(true);
-    setName(""); setEmail(""); setPhone(""); setMessage("");
-  }
-
-  const inputClass = "w-full h-12 px-4 rounded-xl border border-[#1C1412]/15 bg-white text-[#1C1412] placeholder:text-[#6B5B57]/50 focus:outline-none focus:ring-2 focus:ring-[#C41E8E]/30 focus:border-[#C41E8E] transition-all text-sm";
-  const errorClass = "text-red-500 text-xs mt-1";
 
   return (
     <div className="w-full pt-24">
@@ -188,85 +257,7 @@ export default function Contact() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-                  <div>
-                    <h2 className="text-2xl font-serif font-bold text-[#1C1412] mb-2">Send a Message</h2>
-                    <p className="text-[#6B5B57] text-sm">Questions, concerns, or just want to say hello — Tara reads every message.</p>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
-                        Full Name <span className="text-[#C41E8E]">*</span>
-                      </label>
-                      <input
-                        id="name"
-                        type="text"
-                        placeholder="Your name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className={inputClass}
-                      />
-                      {errors.name && <p className={errorClass}>{errors.name}</p>}
-                    </div>
-
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
-                        Email Address <span className="text-[#C41E8E]">*</span>
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        placeholder="you@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className={inputClass}
-                      />
-                      {errors.email && <p className={errorClass}>{errors.email}</p>}
-                    </div>
-
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
-                        Phone Number <span className="text-[#6B5B57] font-normal">(optional)</span>
-                      </label>
-                      <input
-                        id="phone"
-                        type="tel"
-                        placeholder="(000) 000-0000"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className={inputClass}
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-semibold text-[#1C1412] mb-1.5">
-                        Message <span className="text-[#C41E8E]">*</span>
-                      </label>
-                      <textarea
-                        id="message"
-                        rows={5}
-                        placeholder="Tell Tara what's going on — she's listening..."
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-[#1C1412]/15 bg-white text-[#1C1412] placeholder:text-[#6B5B57]/50 focus:outline-none focus:ring-2 focus:ring-[#C41E8E]/30 focus:border-[#C41E8E] transition-all text-sm resize-none"
-                      />
-                      {errors.message && <p className={errorClass}>{errors.message}</p>}
-                    </div>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full rounded-full bg-[#C41E8E] hover:bg-[#6B0032] text-white py-3.5 text-base font-semibold transition-all hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
-                  >
-                    {submitting ? "Sending..." : "Send Message"}
-                  </Button>
-
-                  <p className="text-xs text-center text-[#6B5B57]">
-                    Your information is private and will never be shared.
-                  </p>
-                </form>
+                <ContactForm onSuccess={() => setSubmitted(true)} />
               )}
             </motion.div>
           </div>

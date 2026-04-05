@@ -76,6 +76,7 @@ export default function About() {
                 src={aboutImg}
                 alt="Tara, IBCLC Lactation Consultant"
                 className="relative rounded-3xl w-full object-cover shadow-lg aspect-[4/3]"
+                loading="lazy"
               />
               <div className="absolute -bottom-6 -right-6 bg-[#6B0032] text-white rounded-2xl p-5 shadow-xl">
                 <p className="text-3xl font-serif font-bold">IBCLC</p>

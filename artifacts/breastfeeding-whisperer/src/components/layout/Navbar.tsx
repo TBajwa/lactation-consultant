@@ -66,7 +66,7 @@ export function Navbar() {
                 <span className="hidden xl:inline">(407) 868-1569</span>
               </a>
               <Button asChild className="rounded-full px-6 bg-primary hover:bg-primary/90 text-white shadow-md">
-                <Link href="/book">Book Now</Link>
+                <a href="https://thebreastfeedingwhisperer.simplybook.me/v2/#book" target="_blank" rel="noreferrer">Book Now</a>
               </Button>
             </div>
           </nav>
@@ -108,7 +108,7 @@ export function Navbar() {
             (407) 868-1569
           </a>
           <Button asChild size="lg" className="w-full max-w-xs rounded-full bg-primary text-white text-lg h-14">
-            <Link href="/book">Book an Appointment</Link>
+            <a href="https://thebreastfeedingwhisperer.simplybook.me/v2/#book" target="_blank" rel="noreferrer">Book Now</a>
           </Button>
         </div>
       </div>

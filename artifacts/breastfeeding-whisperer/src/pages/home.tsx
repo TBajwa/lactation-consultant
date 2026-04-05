@@ -2,7 +2,7 @@ import { useSEO } from "@/hooks/useSEO";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Phone, Heart, Award, ShieldCheck, ArrowRight, Star } from "lucide-react";
+import { Phone, Heart, Award, ShieldCheck, ArrowRight, Star, Quote } from "lucide-react";
 import heroImg from "@assets/hero-nursing.png";
 
 export default function Home() {
@@ -149,6 +149,78 @@ export default function Home() {
                 </Link>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonial Highlights Section */}
+      <section className="py-24 bg-[#FDF8F5]">
+        <div className="container mx-auto px-4 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <div className="flex justify-center mb-3">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-5 w-5 fill-[#C41E8E] text-[#C41E8E]" />
+              ))}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#1C1412] mb-4">
+              Real Moms, Real Results
+            </h2>
+            <p className="text-[#6B5B57] text-lg max-w-2xl mx-auto">
+              Hundreds of Central Florida families have found their breastfeeding confidence with Tara's help.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              {
+                quote: "Tara helped me through the toughest first weeks. Her patience and knowledge gave me the confidence I needed.",
+                name: "Sarah M.",
+                location: "Orlando, FL",
+              },
+              {
+                quote: "I was about to give up when I called Tara. She came to my home and fixed everything in one visit. An absolute lifesaver.",
+                name: "Jessica R.",
+                location: "Winter Park, FL",
+              },
+              {
+                quote: "After a tongue tie diagnosis, I didn't know what to do. Tara guided us every step of the way — we're still nursing at 14 months!",
+                name: "Melissa K.",
+                location: "Lake Nona, FL",
+              },
+            ].map((t, i) => (
+              <motion.div
+                key={t.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                className="bg-white rounded-2xl p-6 shadow-sm border border-[#C41E8E]/10 flex flex-col"
+              >
+                <Quote className="h-6 w-6 text-[#C41E8E]/40 mb-3" />
+                <p className="text-[#1C1412] leading-relaxed flex-1 mb-4">"{t.quote}"</p>
+                <div>
+                  <p className="font-semibold text-[#1C1412] text-sm">{t.name}</p>
+                  <p className="text-[#6B5B57] text-xs">{t.location}</p>
+                  <div className="flex mt-2">
+                    {[...Array(5)].map((_, s) => (
+                      <Star key={s} className="h-3 w-3 fill-[#C41E8E] text-[#C41E8E]" />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link href="/testimonials" className="inline-flex items-center gap-2 text-[#C41E8E] font-semibold hover:underline">
+              Read more stories <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

@@ -11,7 +11,7 @@ export function Footer() {
           
           <div className="space-y-4">
             <Link href="/" className="inline-block bg-white p-2 rounded-xl mb-4">
-              <img src={logoSrc} alt="The Breastfeeding Whisperer Logo" className="h-16 w-auto object-contain" />
+              <img src={logoSrc} alt="The Breastfeeding Whisperer Logo" className="h-16 w-auto object-contain" loading="lazy" />
             </Link>
             <p className="text-[#FDF8F5]/80 text-sm leading-relaxed max-w-xs">
               Bridging the gap from delivery to home. Providing expert, compassionate IBCLC lactation support for families in Central Florida and virtually worldwide.

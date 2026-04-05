@@ -1,7 +1,13 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function NotFound() {
+  useSEO({
+    title: "Page Not Found",
+    description: "The page you are looking for doesn't exist. Return to The Breastfeeding Whisperer for expert IBCLC lactation support in Central Florida.",
+    url: "/404",
+  });
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#FDF8F5] pt-20">
       <div className="text-center max-w-md mx-4 px-4">
